@@ -1,0 +1,8 @@
+- 0_process_metadata.Rmd: process and clean cell meta data
+- 1_cell_type_composition.Rmd: examine genotype-specific cell type composition and identify genotypes associated with significant changes in cell type composition in comparison with WT cells
+- 2_pca_anova.Rmd: Perform PCA on pseudobulk samples and quanntify proportion of variance attributed to relevant technical and biological factors
+- 3a_prepare_DE.Rmd: Identify genotypes for which pseudobulk-level differential expression (DE) analysis could be performed
+- 3b_pseudobulk_DE.Rmd: Run pseudobulk-level DE analasis for KO genotypes vs WT conditioned on a given cell type
+- 3c_process_DE_res.Rmd: collect DE results from different cell types and save as text files
+- 3d_nDEGs.Rmd: check the number of DE genes
+- 4_genotype-plots.Rmd: time-point specific visualizations of UMAP embeddings, cell type compositions, and number of DE genes for each genotype
