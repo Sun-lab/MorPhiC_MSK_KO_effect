@@ -1,12 +1,11 @@
 ---
-title: "Portal Figures"
-author: "Zhaoheng Li"
+title: "Genotype Figures"
+author: "Zhaoheng Li, Wei Sun"
 date: "`r Sys.Date()`"
 output: 
   html_document:
     theme: journal
     highlight: tango
-    code_folding: hide
     toc: true
     toc_depth: 3
     toc_float:
