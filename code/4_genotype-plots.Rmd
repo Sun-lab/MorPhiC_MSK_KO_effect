@@ -64,7 +64,7 @@ print(KO2plot)
 integrated = readRDS(file.path(data_dir,"integrated-rpca_BDF-ref_withMeta.RDS"))
 integrated = integrated%>%subset(subset = time_point%in%c("D-1","D3","D7","D11","D18"))
 
-# remove cells without cell type annotations
+# remove cells without cell type annotation
 keep.cells= rownames(integrated@meta.data)[
   !is.na(integrated@meta.data$celltype)
 ]
@@ -118,27 +118,17 @@ combined = integrated%>%subset(subset = genotype %in% c(KO2plot,"WT"))
 # RPCA-UMAP colored by cell types
 
 ```{r, fig.width = 10, fig.height = 8, warning=FALSE,message=FALSE}
-
-# (a) Pull the UMAP embeddings into a data frame:
 umap_coords = Embeddings(combined, "rpca.umap") %>% 
   as.data.frame() %>%
-  # Turn rownames (cell barcodes) into a column called ???cell???
   tibble::rownames_to_column(var = "cell")
-
-# (b) Pull the metadata into a data frame and line up by ???cell???:
 meta_df = combined@meta.data %>%
   tibble::rownames_to_column(var = "cell")
-
-# (c) Join them so each cell has UMAP1, UMAP2, + genotype + celltype + etc.
 umap_df = umap_coords %>%
   left_join(meta_df, by = "cell")
-
 
 umap_df$celltype = factor(umap_df$celltype,
                               levels =celltype_orders ,
                               ordered = TRUE)
-
-
 umap_wt = umap_df %>% filter(genotype == "WT")
 umap_ko = umap_df %>% filter(genotype == KO2plot)
 
