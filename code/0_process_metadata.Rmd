@@ -70,10 +70,6 @@ v0 = read.csv(file.path(meta_dir,"meta_combined_v0.csv"))
 
 
 ```{r}
-
-```
-
-```{r}
 meta%>%filter(celltype=="ESC")%>%group_by(sample_name,feature.4)%>%summarize(n()) # almost all ESC cells are KO villageg samples
 ```
 
@@ -290,7 +286,7 @@ unique(integrated$feature.4)[!(unique(integrated$feature.4)%in%unique(combined$s
 
 
 ```{r}
-# injective mapping between sgrna and background
+# injective mappin gbetween sgrna and background
 sum(rowSums(table(combined$sgrna, combined$background)!=0)>1)
 ```
 
@@ -330,7 +326,7 @@ summary(integrated$time_point)
 ```
 
 ```{r}
-# handle WT genotypes
+# hanlde WT genotypes
 integrated$genotype0 =  integrated$genotype
 integrated$genotype = if_else(integrated$genotype%in%c("WT","WT111","WT4"),
                        "WT",
@@ -350,4 +346,93 @@ unique(integrated$sample_name )
 saveRDS(integrated,file.path(output_dir,"integrated-rpca_BDF-ref_withMeta.RDS"))
 
 write.csv(integrated[[]],file.path(output_dir,"processed_metadata.csv"))
+```
+
+# create pseudobulk data
+
+```{r}
+integrated = readRDS(file.path(output_dir,"integrated-rpca_BDF-ref_withMeta.RDS"))
+```
+
+
+
+```{r}
+cell2kp = integrated[[]]%>%filter(!is.na(celltype))%>%pull(barcode)
+obj = integrated%>%subset(barcode%in%cell2kp)
+
+obj$celltype = as.factor(obj$celltype)
+obj$background = as.factor(obj$background)
+obj$genotype = as.factor(obj$genotype)
+levels(obj$celltype)=gsub("_","-",levels(obj$celltype)) # rename celltype levels
+pseudo.obj = AggregateExpression(obj, assays = "RNA", return.seurat = T,
+                                  group.by = c("sample_name","feature.4", "celltype"))
+
+pseudo.obj$sample_name = gsub("-","_",pseudo.obj$sample_name)
+
+# new_ids            = gsub("-","_",Cells(pseudo.obj))
+# names(new_ids)     = Cells(pseudo.obj)                 # map old → new
+# pseudo.obj = RenameCells(pseudo.obj, new.names = new_ids  )
+
+
+# process metadata
+pseudo.meta = pseudo.obj[[]]
+pseudo.meta$pseudo.sample.id = pseudo.meta$orig.ident
+obj$pseudo.sample.id = as.factor(paste(obj$sample_name,obj$feature.4,obj$celltype,sep='_'))
+obj$pseudo.sample.id = gsub("-","_", obj$pseudo.sample.id)
+pseudo.meta$pseudo.sample.id = gsub("-","_",rownames(pseudo.meta))
+pseudo.meta = pseudo.meta %>%left_join(obj[[]]%>%select(pseudo.sample.id,genotype,source,background)%>%distinct(), by = c("pseudo.sample.id"))
+pseudo.meta$celltype = as.factor(pseudo.meta$celltype)
+pseudo.meta$genotype = as.factor(pseudo.meta$genotype)
+rownames(pseudo.meta) = pseudo.meta$orig.ident
+
+
+pseudo.obj@meta.data = pseudo.meta
+
+head(pseudo.obj@meta.data )
+
+
+```
+
+
+```{r}
+# filter by pseudobulk size
+
+min.cells = 30
+n.df=obj[[]]%>%dplyr::count(pseudo.sample.id) 
+head(n.df%>%arrange(n))
+n.df = n.df%>%filter(n>=min.cells)
+rownames(n.df) = n.df$pseudo.sample.id
+pseudo.ids.keep=n.df$pseudo.sample.id
+head(n.df%>%arrange(n))
+
+pseudo.ids.keep=n.df$pseudo.sample.id
+length(pseudo.ids.keep)
+
+pseudo.obj = pseudo.obj%>%subset(pseudo.sample.id%in%pseudo.ids.keep)
+pseudo.obj = Seurat::AddMetaData(pseudo.obj,n.df$n,col.name = 'nCells')
+
+obj = obj%>%subset(pseudo.sample.id%in%pseudo.obj$pseudo.sample.id)
+
+
+pseudo.obj$celltype = as.factor(pseudo.obj$celltype)
+
+# mergge WT genotypes
+pseudo.obj$genotype0 =  pseudo.obj$genotype
+pseudo.obj$genotype = if_else(pseudo.obj$genotype%in%c("WT","WT111","WT4"),
+                       "WT",
+                       pseudo.obj$genotype)
+pseudo.obj$genotype = as.factor(pseudo.obj$genotype)
+
+
+saveRDS(pseudo.obj,file.path(output_dir,"pseudobulk.RDS"))
+#saveRDS(obj,file.path(output_dir,"integrated_filtered4pseudobulk.RDS"))
+```
+
+
+
+# Session information
+
+```{r}
+gc()
+sessionInfo()
 ```
