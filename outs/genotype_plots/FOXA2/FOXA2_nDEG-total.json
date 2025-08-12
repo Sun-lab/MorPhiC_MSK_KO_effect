@@ -168,15 +168,15 @@
   },
   "source": "A",
   "attrs": {
-    "6cee5ddb718f": {
+    "55f364c6dbe3": {
       "x": {},
       "y": {},
       "type": "bar"
     }
   },
-  "cur_data": "6cee5ddb718f",
+  "cur_data": "55f364c6dbe3",
   "visdat": {
-    "6cee5ddb718f": ["function (y) ", "x"]
+    "55f364c6dbe3": ["function (y) ", "x"]
   },
   "highlight": {
     "on": "plotly_click",

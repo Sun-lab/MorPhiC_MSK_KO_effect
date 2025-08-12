@@ -61,3 +61,10 @@ for(geno in names(res_list)){
   )
 }
 ```
+
+# Session information
+
+```{r}
+gc()
+sessionInfo()
+```

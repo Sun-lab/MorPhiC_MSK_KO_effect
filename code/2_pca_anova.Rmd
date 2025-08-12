@@ -44,7 +44,7 @@ theme_set(theme_classic())
 
 data_dir = "/home/zli4/MSK_DEC24/Analysis"
 
-out_dir = "/home/zli4/MSK_DEC24/Analysis/outs/anova"
+out_dir = "/fh/fast/sun_w/zhaoheng_li/MSK_DEC24/Analysis/outs/anova"
 
 
 ```
@@ -208,7 +208,7 @@ pseudo_obj_list
 
 
 
-```{r pca-features,fig.width = 8, fig.height = 10, warning=FALSE,message=FALSE}
+```{r pca-features,fig.width = 10, fig.height = 12, warning=FALSE,message=FALSE}
 
 
 pca_features = list()
@@ -253,7 +253,12 @@ for(tp in c("D-1","D3","D7","D11","D18")){
       values = celltype_palette,   
       drop   = TRUE                
     )+
-    theme_classic()
+    theme_classic()+
+    guides(
+      color = guide_legend(
+        override.aes = list(size = 4)  # Increase legend point size
+      )
+    )
 
 
   fig2 = df%>%ggplot(aes(x=PC_1,y=PC_2,color = n))+
@@ -266,6 +271,7 @@ for(tp in c("D-1","D3","D7","D11","D18")){
      color  = "# cells"
     )+
     theme_classic()
+  
   fig3 = df%>%ggplot(aes(x=PC_1,y=PC_2,color = background))+
     geom_point(size=1)+
     labs(
@@ -273,7 +279,12 @@ for(tp in c("D-1","D3","D7","D11","D18")){
       x     = pc_labs(1),
       y     = pc_labs(2),
     )+
-    theme_classic()
+    theme_classic()+
+    guides(
+      color = guide_legend(
+        override.aes = list(size = 4)  # Increase legend point size
+      )
+    )
   fig4 = df%>%ggplot(aes(x=PC_1,y=PC_2,color = source))+
     geom_point(size=1)+
     labs(
@@ -281,7 +292,12 @@ for(tp in c("D-1","D3","D7","D11","D18")){
       x     = pc_labs(1),
       y     = pc_labs(2),
     )+
-    theme_classic()
+    theme_classic()+
+    guides(
+      color = guide_legend(
+        override.aes = list(size = 4)  # Increase legend point size
+      )
+    )
   fig5 = df%>%ggplot(aes(x=PC_1,y=PC_2,color = genotype,shape=background,label=feature.4))+
     geom_point(size=1)+
     ggrepel::geom_text_repel(aes(label = feature.4),size =2) +
@@ -303,7 +319,7 @@ for(tp in c("D-1","D3","D7","D11","D18")){
         heights = c(1, 1, 2)   # give fig5 double the row-height
       )
 
-  ggsave(file.path(out_dir,paste0("pc_plots/",tp,".png",sep='')),fig,width = 8,height = 10)
+  ggsave(file.path(out_dir,paste0("pc_plots/",tp,".png",sep='')),fig,width = 10,height = 12)
 }
 if(file.exists( file.path(out_dir,"pca_features.RDS"))){
   pca_features = readRDS(file.path(out_dir,"pca_features.RDS"))

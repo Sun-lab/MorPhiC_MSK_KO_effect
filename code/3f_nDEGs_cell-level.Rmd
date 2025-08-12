@@ -1,5 +1,5 @@
 ---
-title: "Number of DE Genes"
+title: "Number of DE Genes (Cell-Level Test)"
 author: "Zhaoheng Li, Wei Sun"
 date: "`r Sys.Date()`"
 output: 
@@ -34,27 +34,10 @@ library(grid)
 library(purrr)
 library(tidyverse)
 out_dir = "/fh/fast/sun_w/zhaoheng_li/MSK_DEC24/Analysis/outs/differential_expression"
+celllevel_out_dir = file.path(out_dir,"cell-level")
 ```
 
 
-# save DESeq2 results to tsv files
-
-```{r}
-
-for (tp in c("D-1", "D3", "D7", "D11", "D18")) {
-  res <- readRDS(file.path(out_dir, paste0("DE_pseudobulk_", tp, ".RDS")))
-  write.table(
-    res,
-    file      = file.path(out_dir, paste0("DE_pseudobulk_", tp, ".tsv")),
-    sep       = "\t",
-    quote     = FALSE,
-    row.names = FALSE,
-    col.names = TRUE
-  )
-  
-}
-
-```
 
 # barplots
 
@@ -62,10 +45,10 @@ for (tp in c("D-1", "D3", "D7", "D11", "D18")) {
 
 for( tp in c("D-1","D3","D7","D11","D18")){
   print(tp)
-  res = readRDS(file.path(out_dir,paste0( "DE_pseudobulk_",tp,".RDS")))
-   
+  res = read.csv(file.path(celllevel_out_dir,paste0("DE_cell-level_",tp,".csv")),row.names = 1)
+  res$gene = rownames(res)
   fig = res%>%
-   dplyr::filter(padj<0.05)%>%
+   dplyr::filter(p_val_adj<0.05)%>%
       group_by(celltype,genotype)%>%
    dplyr::summarise(n_DEG = n_distinct(gene))%>%
     ggplot(aes(x=genotype,y=n_DEG))+
@@ -73,30 +56,14 @@ for( tp in c("D-1","D3","D7","D11","D18")){
     xlab("")+
     ylab("Number of DE Genes")+
     theme_classic()+
-    theme(text = element_text(size = 10),
+    theme(text = element_text(size = 5),
             axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1))+
     facet_wrap(~celltype)
-  ggsave(file.path(out_dir,paste0("nDEGs/",tp,"_nDEG.png",sep='')),fig,width = 8,height = 6)
+  ggsave(file.path(celllevel_out_dir,paste0("nDEGs/",tp,"_nDEG.png",sep='')),fig,width = 8,height = 6)
   print(fig)
 }
 ```
 
-# add sample sizes
-
-```{r}
-f_pseudobulk_list = file.path(out_dir,"pseudobulk_list.RDS")
-pseudo_obj_list  = readRDS(f_pseudobulk_list)
-
-```
-
-```{r}
-min_cells = 30
-
-
-pseudo_obj_list = lapply(pseudo_obj_list,function(pseudo_obj){
-  pseudo_obj%>%subset(subset = n>=min_cells)
-})
-```
 
 
 ```{r,fig.width=8,fig.height=6}
@@ -104,9 +71,10 @@ pseudo_obj_list = lapply(pseudo_obj_list,function(pseudo_obj){
 nDEG = list()
 for( tp in c("D-1","D3","D7","D11","D18")){
   print(tp)
-  res = readRDS(file.path(out_dir,paste0( "DE_pseudobulk_",tp,".RDS"))) 
+  res = read.csv(file.path(celllevel_out_dir,paste0("DE_cell-level_",tp,".csv")),row.names = 1)
+  res$gene = rownames(res)
   df = res%>%
-   dplyr::filter(padj<0.05)%>%
+   dplyr::filter(p_val_adj<0.05)%>%
       group_by(celltype,genotype)%>%
    dplyr::summarise(n_DEG = n_distinct(gene))
   df$tp = tp
@@ -114,48 +82,6 @@ for( tp in c("D-1","D3","D7","D11","D18")){
 }
 nDEG_df = Reduce(rbind, nDEG)
 
-nDEG_df
-```
-
-
-```{r}
-
-meta_counts = imap_dfr(
-  pseudo_obj_list,
-  ~{
-    tp   = .y                
-    meta = .x[[]]             
-                              
-    meta %>%
-      group_by(celltype, genotype) %>%       
-      summarise(
-        n_pseudobulk = n(),                     
-        n_cells_tol   = sum(n),                
-        .groups   = "drop"
-      ) %>%
-      mutate(tp = tp)                       
-  }
-)
-
-
-wt_counts = meta_counts %>%
-  filter(genotype == "WT") %>%
-  select(tp, celltype, 
-         n_WT_samples  = n_pseudobulk,
-         n_cells_WT    = n_cells_tol)
-ko_counts = meta_counts %>%
-  filter(genotype != "WT") %>%   # every non-WT KO
-  select(tp, celltype, genotype, 
-         n_KO_samples = n_pseudobulk,
-         n_cells_KO   = n_cells_tol)
-
-
-nDEG_df = nDEG_df %>%                
-  left_join(wt_counts, by = c("tp", "celltype")) %>%         
-  left_join(ko_counts, by = c("tp", "celltype", "genotype"))  
-```
-
-```{r}
 nDEG_df = nDEG_df %>% 
   mutate(
     id        = paste(tp, celltype, sep = "_"),
@@ -163,7 +89,7 @@ nDEG_df = nDEG_df %>%
   )
 
 nDEG_df$id = fct_inorder(nDEG_df$id)
-nDEG_df
+head(nDEG_df)
 ```
 
 
@@ -191,24 +117,23 @@ dotplot = df %>% ggplot(aes(x = id, y = genotype,
   labs(x = NULL, y = "KO genotype") +
   theme_bw() +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 8),
     legend.position = "right"
   )
 dotplot
-ggsave(file.path(out_dir,"nDEGs/nDEGs_dotplot.png"),dotplot,width = 6,height = 6)
+ggsave(file.path(celllevel_out_dir,"nDEGs/nDEGs_dotplot.png"),dotplot,width = 6,height = 6)
 ```
 
 ```{r}
 
 write.table(
   nDEG_df,
-  file      = file.path(out_dir,"nDEGs/nDEG.tsv"),
+  file      = file.path(celllevel_out_dir,"nDEGs/nDEG.tsv"),
   sep       = "\t",
   quote     = FALSE,
   row.names = FALSE
 )
 ```
-
 
 # Session information
 
@@ -216,4 +141,5 @@ write.table(
 gc()
 sessionInfo()
 ```
+
 
