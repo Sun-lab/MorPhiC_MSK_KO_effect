@@ -56,6 +56,7 @@ for (tp in c("D-1", "D3", "D7", "D11", "D18")) {
 
 ```
 
+
 # barplots
 
 ```{r barplot,fig.width=8,fig.height=6}

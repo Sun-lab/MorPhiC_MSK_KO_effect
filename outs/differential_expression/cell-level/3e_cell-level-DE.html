@@ -11,7 +11,7 @@
 
 <meta name="author" content="Zhaoheng Li, Wei Sun" />
 
-<meta name="date" content="2025-08-11" />
+<meta name="date" content="2025-08-13" />
 
 <title>Cell-Level Differential Expression Analysis</title>
 
@@ -1584,7 +1584,7 @@ div.tocify {
 <h1 class="title toc-ignore">Cell-Level Differential Expression
 Analysis</h1>
 <h4 class="author">Zhaoheng Li, Wei Sun</h4>
-<h4 class="date">2025-08-11</h4>
+<h4 class="date">2025-08-13</h4>
 
 </div>
 
@@ -1630,7 +1630,7 @@ Analysis</h1>
 ##               10152                1856               13743                3944</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(tp <span class="cf">in</span> <span class="fu">c</span>(<span class="st">&quot;D-1&quot;</span>,<span class="st">&quot;D3&quot;</span>,<span class="st">&quot;D7&quot;</span>,<span class="st">&quot;D11&quot;</span>,<span class="st">&quot;D18&quot;</span>)){</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">file.path</span>(celllevel_out_dir,<span class="fu">paste0</span>(<span class="st">&quot;DE_cell-level_&quot;</span>,tp,<span class="st">&quot;.csv&quot;</span>)))){</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>      obj <span class="ot">=</span> integrated<span class="sc">%&gt;%</span><span class="fu">subset</span>(<span class="at">subset =</span> time_point <span class="sc">==</span> tp)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    obj <span class="ot">=</span> integrated<span class="sc">%&gt;%</span><span class="fu">subset</span>(<span class="at">subset =</span> time_point <span class="sc">==</span> tp)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    ct2test <span class="ot">=</span> <span class="fu">names</span>(<span class="fu">table</span>(obj<span class="sc">$</span>celltype))[<span class="fu">table</span>(obj<span class="sc">$</span>celltype)<span class="sc">&gt;</span><span class="dv">60</span>]</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(ct2test) </span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -1643,23 +1643,1609 @@ Analysis</h1>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;working on: &quot;</span>, current_KO))</span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        n_KO <span class="ot">=</span> <span class="fu">sum</span>(obj_sub<span class="sc">$</span>genotype<span class="sc">==</span>current_KO)</span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(n_KO<span class="sc">&gt;=</span><span class="dv">30</span>){</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>          df <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(obj_sub, <span class="at">ident.1 =</span> current_KO, <span class="at">ident.2 =</span> <span class="st">&#39;WT&#39;</span>,<span class="at">group.by =</span> <span class="st">&#39;genotype&#39;</span>)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>          df<span class="sc">$</span>genotype <span class="ot">=</span> current_KO</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>          df<span class="sc">$</span>celltype <span class="ot">=</span> ct</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>          res_all <span class="ot">=</span> <span class="fu">rbind</span>(res_all, df)</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">write.csv</span>(res_all,<span class="fu">file.path</span>(celllevel_out_dir,<span class="fu">paste0</span>(<span class="st">&quot;DE_cell-level_&quot;</span>,tp,<span class="st">&quot;.csv&quot;</span>)))</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>          df <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(obj_sub, </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>                            <span class="at">ident.1 =</span> current_KO, <span class="at">ident.2 =</span> <span class="st">&#39;WT&#39;</span>,<span class="at">group.by =</span> <span class="st">&#39;genotype&#39;</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>          df<span class="sc">$</span>time_point <span class="ot">=</span> tp</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>          df<span class="sc">$</span>genotype <span class="ot">=</span> current_KO</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>          df<span class="sc">$</span>celltype <span class="ot">=</span> ct</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>          df<span class="sc">$</span>gene <span class="ot">=</span> <span class="fu">rownames</span>(df)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>          res_all <span class="ot">=</span> <span class="fu">rbind</span>(res_all, df)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">write.csv</span>(res_all,<span class="fu">file.path</span>(celllevel_out_dir,<span class="fu">paste0</span>(<span class="st">&quot;DE_cell-level_&quot;</span>,tp,<span class="st">&quot;.csv&quot;</span>)))</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;ESC&quot;    &quot;ESC_DE&quot;
+## [1] &quot;current celltype: ESC&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het     GATA6 
+##       201       123       235       489       708       469       339       311 
+##  GATA6het     GLIS3       GSC      HHEX     HHEXe   HHEXhet     HNF4A  HNF4Ahet 
+##       540       508       376       548       389       130       141       120 
+##     KDM2B      MNX1 NANOGehet   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5 
+##        86       534       234       307       224       609       654       868 
+##      PAX6      PBX1      PDX1   PDX1het   PROSER1     QSER1 QSER1TET1      RFX6 
+##       348       253       736       320       173       248       263       608 
+##    TADA2B      TET1  TET1/2/3      TLE3        WT 
+##       209       165       249       227       671 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: ESC_DE&quot;
+## 
+##   WT 
+## 2095 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;DE&quot;     &quot;ESC&quot;    &quot;ESC_DE&quot;
+## [1] &quot;current celltype: DE&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het     GATA6 
+##       421       140       207      1012       700       386       375       265 
+##  GATA6het     GLIS3       GSC      HHEX     HHEXe   HHEXhet     HNF4A  HNF4Ahet 
+##       490       137       216       209       352       103       161       104 
+##     KDM2B      MNX1 NANOGehet   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5 
+##        47       898       193       399       228       783       281       629 
+##      PAX6      PBX1      PDX1   PDX1het   PROSER1     QSER1 QSER1TET1      RFX6 
+##       350        74       564        27       413       296       396       643 
+##    TADA2B      TET1  TET1/2/3      TLE3        WT 
+##       115       329       112       260      2649 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: ESC&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het     GATA6 
+##        31         9        27        68       118        41        30        67 
+##  GATA6het     GLIS3       GSC      HHEX     HHEXe   HHEXhet     HNF4A  HNF4Ahet 
+##       104         7        42        31        23         4         8        13 
+##     KDM2B      MNX1 NANOGehet   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5 
+##         6        87         8        21        15        47        43        37 
+##      PAX6      PBX1      PDX1   PDX1het   PROSER1     QSER1 QSER1TET1      RFX6 
+##        23         3        21         2        24        27        33        32 
+##    TADA2B      TET1  TET1/2/3      TLE3        WT 
+##        11        16         2        22        49 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: ESC_DE&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het     GATA6 
+##        54         8        30       208       146        68        71       152 
+##  GATA6het     GLIS3       GSC      HHEX     HHEXe   HHEXhet     HNF4A  HNF4Ahet 
+##       124         6       303        58        68        32        25        24 
+##     KDM2B      MNX1 NANOGehet   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5 
+##         4       180         4        56        44        91        53        57 
+##      PAX6      PBX1      PDX1   PROSER1     QSER1 QSER1TET1      RFX6    TADA2B 
+##        34         1        36        47        54        49        76         3 
+##      TET1  TET1/2/3      TLE3        WT 
+##        40         3        74       144 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;DE&quot;          &quot;Endothelial&quot; &quot;ESC&quot;         &quot;Liver&quot;       &quot;PFG&quot;        
+## [6] &quot;Stromal&quot;    
+## [1] &quot;current celltype: DE&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het     GATA6 
+##        47         8        16        22        38        13         4         3 
+##  GATA6het     GLIS3       GSC      HHEX     HHEXe   HHEXhet     HNF4A  HNF4Ahet 
+##        13         3         2        11         3         1         1         5 
+##     KDM2B      MNX1 NANOGehet   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5 
+##         1        60         3        12         5        41        23        13 
+##      PAX6      PBX1      PDX1   PROSER1     QSER1 QSER1TET1      RFX6    TADA2B 
+##        28        13        31         1         4         3        60        35 
+##      TET1  TET1/2/3      TLE3        WT 
+##         3         5         8        27 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: Endothelial&quot;
+## 
+##       ARX      BCOR     FOXA1     FOXA2     GATA4  GATA4het     GATA6  GATA6het 
+##        26         2        15       310         3         5       282        19 
+##     GLIS3       GSC      HHEX     HHEXe   HHEXhet     HNF4A  HNF4Ahet     KDM2B 
+##         1        11         3         3         2         1         1         1 
+##      MNX1   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5      PAX6      PBX1 
+##        22         2         4         6         2         8         5         3 
+##      PDX1   PROSER1     QSER1 QSER1TET1      RFX6    TADA2B      TET1  TET1/2/3 
+##         6         4         2         8         9         1         3         1 
+##      TLE3        WT 
+##         3        41 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: ESC&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het     GATA6 
+##        18         2         4        14        15         2         1         6 
+##  GATA6het     GLIS3       GSC      HHEX     HHEXe     HNF4A     KDM2B      MNX1 
+##         3         1         2         5         1         2         1        22 
+## NANOGehet   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5      PAX6      PBX1 
+##         1         6         5        17         3         5         9         4 
+##      PDX1   PDX1het   PROSER1     QSER1 QSER1TET1      RFX6    TADA2B      TET1 
+##        10         2         1         1         1        17        11         2 
+##  TET1/2/3      TLE3        WT 
+##         4         3         8 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: Liver&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het     GATA6 
+##       212        94        15       435      1389        25        66        26 
+##  GATA6het     GLIS3       GSC      HHEX     HHEXe   HHEXhet     HNF4A  HNF4Ahet 
+##        82        20        49        96       152         9        25        27 
+##     KDM2B      MNX1 NANOGehet   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5 
+##         5       350        27       160        76       328       166       195 
+##      PAX6      PBX1      PDX1   PDX1het   PROSER1     QSER1 QSER1TET1      RFX6 
+##       182        41       180         6       139        63        59       256 
+##    TADA2B      TET1  TET1/2/3      TLE3        WT 
+##        47       114        28       129      1169 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: PFG&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het     GATA6 
+##       209        61        16       579       192        30        89        18 
+##  GATA6het     GLIS3       GSC      HHEX     HHEXe   HHEXhet     HNF4A  HNF4Ahet 
+##        83        39        39        10        39         3        72        53 
+##     KDM2B      MNX1 NANOGehet   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5 
+##         3       524        64       183       121       541       181       261 
+##      PAX6      PBX1      PDX1   PDX1het   PROSER1     QSER1 QSER1TET1      RFX6 
+##       232        37       249         6       165        67        42       368 
+##    TADA2B      TET1  TET1/2/3      TLE3        WT 
+##        41       151        45       209      2498 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: Stromal&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het     GATA6 
+##        74         2        20        90        98        24        64        33 
+##  GATA6het     GLIS3       GSC      HHEX     HHEXe   HHEXhet     HNF4A  HNF4Ahet 
+##        31         3        90        25        31         4        17         7 
+##      MNX1 NANOGehet   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5      PAX6 
+##       196         2        17        18       111        39        21        42 
+##      PBX1      PDX1   PROSER1     QSER1 QSER1TET1      RFX6    TADA2B      TET1 
+##        14        16        17         9         7        37        11        16 
+##  TET1/2/3      TLE3        WT 
+##         6        33        36 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+##  [1] &quot;DE&quot;                  &quot;Ductal&quot;              &quot;Endothelial&quot;        
+##  [4] &quot;EnP&quot;                 &quot;ESC&quot;                 &quot;Liver&quot;              
+##  [7] &quot;Mesenchymal_Stromal&quot; &quot;PFG&quot;                 &quot;PP&quot;                 
+## [10] &quot;Stromal&quot;            
+## [1] &quot;current celltype: DE&quot;
+## 
+##      ARX   BMPR1A    FOXA1    FOXA2    GATA4 GATA6het    HHEXe HNF4Ahet 
+##        6        1        7        1        4        2        2        1 
+##     MNX1     NGN3   NKX2-2 ONECUT1e    OTUD5     PDX1     RFX6   TADA2B 
+##        4        2        7        2        2        8        1        6 
+##     TLE3       WT 
+##        1       10 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: Ductal&quot;
+## 
+##      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het     GATA6  GATA6het 
+##         3        11         7         2        18        13         2         2 
+##     GLIS3      HHEX     HHEXe   HHEXhet     HNF4A      MNX1 NANOGehet   NEUROD1 
+##         1         3         6         1         3        22         2         1 
+##      NGN3    NKX2-2  ONECUT1e     OTUD5      PAX6      PBX1      PDX1   PROSER1 
+##         3         8         3         3         9         1        16         2 
+##     QSER1 QSER1TET1      RFX6    TADA2B      TET1  TET1/2/3      TLE3        WT 
+##         3         1         8         3         1         2         6        27 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: Endothelial&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het     GATA6 
+##        10         2         1         2        78         1         3       107 
+##  GATA6het       GSC      HHEX     HHEXe     HNF4A  HNF4Ahet      MNX1      NGN3 
+##         6         4         3         2         1         2         7         3 
+##    NKX2-2  ONECUT1e     OTUD5      PAX6      PDX1     QSER1 QSER1TET1      RFX6 
+##         2         3         2         1         3         1         2         1 
+##      TET1      TLE3        WT 
+##         1         2         4 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: EnP&quot;
+## 
+##       ARX      BCOR     FOXA1     FOXA2  GATA4het     GATA6     GLIS3     HHEXe 
+##        98         1        79        16         1         1         3         1 
+##     HNF4A  HNF4Ahet      MNX1 NANOGehet   NEUROD1      NGN3    NKX2-2  ONECUT1e 
+##         2         2        56         4        11         1       212         2 
+##     OTUD5      PAX6      PBX1      PDX1   PROSER1     QSER1 QSER1TET1      RFX6 
+##         9       202        34         6         4         4         2        33 
+##    TADA2B      TET1  TET1/2/3      TLE3        WT 
+##         3         4         7        25       475 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: ESC&quot;
+## 
+##      BCOR    BMPR1A     FOXA1     GATA4  HNF4Ahet      MNX1 NANOGehet   NEUROD1 
+##         2         2         2         2         1         9         1         2 
+##      NGN3    NKX2-2  ONECUT1e     OTUD5      PAX6      PBX1      PDX1      RFX6 
+##         1        12         2         3         6         2        10         3 
+##    TADA2B      TET1  TET1/2/3      TLE3        WT 
+##        15         2         1         1        23 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: Liver&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het  GATA6het 
+##         7         8         1        12        69         7         5         5 
+##      HHEX     HHEXe     HNF4A  HNF4Ahet     KDM2B      MNX1 NANOGehet   NEUROD1 
+##         2         2         1         2         2         8         4         6 
+##      NGN3    NKX2-2  ONECUT1e     OTUD5      PAX6      PBX1      PDX1   PROSER1 
+##         1        17         4         5        12         2        13         4 
+##     QSER1 QSER1TET1      RFX6    TADA2B      TET1  TET1/2/3      TLE3        WT 
+##         6         4         3        13         3         1        10        73 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: Mesenchymal_Stromal&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het  GATA6het 
+##         1         4         1         9         2         2         6         3 
+##     GLIS3       GSC     HNF4A  HNF4Ahet      MNX1 NANOGehet   NEUROD1      NGN3 
+##         3         1         2         7        22         1        11         5 
+##    NKX2-2  ONECUT1e     OTUD5      PAX6   PDX1het   PROSER1     QSER1      RFX6 
+##        18         5         3         3         1         3         2         4 
+##    TADA2B      TET1      TLE3        WT 
+##         3         3         9       124 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: PFG&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het  GATA6het 
+##        18         7         4        16         9         9        19         4 
+##     GLIS3       GSC     HNF4A  HNF4Ahet      MNX1 NANOGehet   NEUROD1      NGN3 
+##         1         1         6         5        73         8        14        13 
+##    NKX2-2  ONECUT1e     OTUD5      PAX6      PBX1      PDX1   PROSER1     QSER1 
+##        77         8        20        26        10        64         4         3 
+## QSER1TET1      RFX6    TADA2B      TET1  TET1/2/3      TLE3        WT 
+##         2        22        55         6         8        18        90 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: PP&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het     GATA6 
+##       149        91        29       403        48        53       148        27 
+##  GATA6het     GLIS3       GSC      HHEX     HHEXe     HNF4A  HNF4Ahet     KDM2B 
+##       105        38        33         1        26       106        88         3 
+##      MNX1 NANOGehet   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5      PAX6 
+##       617        75       236       133       714       130       209       235 
+##      PBX1      PDX1   PDX1het   PROSER1     QSER1 QSER1TET1      RFX6    TADA2B 
+##        46       405         4       154        45        24       172        72 
+##      TET1  TET1/2/3      TLE3        WT 
+##       147        63       220      2822 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: Stromal&quot;
+## 
+##       ARX    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het     GATA6  GATA6het 
+##        55        18        46        45         8        27        16        79 
+##     GLIS3       GSC      HHEX     HHEXe   HHEXhet     HNF4A  HNF4Ahet      MNX1 
+##         1       107        17        28         2        27        64        94 
+##   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5      PAX6      PDX1   PROSER1 
+##        40         9        36        15        18        54        28         4 
+##     QSER1 QSER1TET1      RFX6    TADA2B      TET1  TET1/2/3      TLE3        WT 
+##         7         3        34         1         7         1        33        37 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+##  [1] &quot;DE&quot;                  &quot;Ductal&quot;              &quot;EnP&quot;                
+##  [4] &quot;ESC&quot;                 &quot;Liver&quot;               &quot;Mesenchymal_Stromal&quot;
+##  [7] &quot;PFG&quot;                 &quot;PP&quot;                  &quot;SC-alpha&quot;           
+## [10] &quot;SC-beta&quot;             &quot;SC-delta&quot;            &quot;SC-EC&quot;              
+## [13] &quot;Stromal&quot;            
+## [1] &quot;current celltype: DE&quot;
+## 
+##      BCOR    BMPR1A     FOXA1     GATA4     GATA6     GLIS3     HNF4A      MNX1 
+##         4         1         1         1         1         1         1         9 
+##      NGN3    NKX2-2     OTUD5      PDX1   PROSER1     QSER1 QSER1TET1      RFX6 
+##         2         2         1         8        14         3         1         3 
+##  TET1/2/3      TLE3        WT 
+##         1         4        42 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: Ductal&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het     GATA6 
+##       117       239       202       238        58       188       297        56 
+##  GATA6het     GLIS3       GSC      HHEX     HHEXe     HNF4A  HNF4Ahet     KDM2B 
+##       133        14        48         4        57       125       125         2 
+##      MNX1 NANOGehet   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5      PAX6 
+##       588       147       329       357       457       122       187       149 
+##      PBX1      PDX1   PROSER1     QSER1 QSER1TET1      RFX6    TADA2B      TET1 
+##        26      1157       649       111         3       369        40        52 
+##  TET1/2/3      TLE3        WT 
+##       110       343      4129 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: EnP&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het     GATA6 
+##        87        25         4        63        13         7        24         1 
+##  GATA6het     GLIS3       GSC     HHEXe     HNF4A  HNF4Ahet      MNX1 NANOGehet 
+##        27         8         8         7        15         9       472        20 
+##   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5      PAX6      PBX1      PDX1 
+##        66         3       100        35        28       316        35       285 
+##   PDX1het   PROSER1     QSER1 QSER1TET1      RFX6    TADA2B      TET1  TET1/2/3 
+##         2        63        16        15        82        68        15         9 
+##      TLE3        WT 
+##       216      2184 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: ESC&quot;
+## 
+##    BMPR1A     FOXA2  GATA4het     GATA6     HNF4A      MNX1 NANOGehet      NGN3 
+##         1         1         1         1         1         3         1         4 
+##      PDX1   PROSER1      TET1  TET1/2/3        WT 
+##         8         2         1         1        37 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: Liver&quot;
+## 
+##       ARX      BCOR     FOXA1     FOXA2     GATA4  GATA4het     GATA6  GATA6het 
+##        15         8        11        99         2         3         1         4 
+##       GSC      HHEX     HHEXe   HHEXhet     HNF4A  HNF4Ahet     KDM2B      MNX1 
+##         4         3         6         1         2         2         1        13 
+##   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5      PAX6      PBX1      PDX1 
+##         7        10         2         1         8         7         2        17 
+##   PROSER1     QSER1 QSER1TET1      RFX6    TADA2B      TET1      TLE3        WT 
+##        12        12        16        22         3         5        10       361 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: Mesenchymal_Stromal&quot;
+## 
+## MNX1   WT 
+##    1   75 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: PFG&quot;
+## 
+##    FOXA1    HNF4A HNF4Ahet     MNX1  NEUROD1     NGN3   NKX2-2 ONECUT1e 
+##        2        2        1        3        1        5        2        1 
+##     PBX1     PDX1  PROSER1     RFX6   TADA2B TET1/2/3     TLE3       WT 
+##        1       33        1        3        1        1        3       15 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: PP&quot;
+## 
+##       ARX      BCOR     FOXA1     GATA4  GATA6het       GSC     HHEXe     HNF4A 
+##        12        18         8         1         1         1         1         2 
+##      MNX1 NANOGehet   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5      PAX6 
+##        16         1         9        13        11         2         5         4 
+##      PBX1      PDX1   PROSER1     QSER1      RFX6    TADA2B      TET1  TET1/2/3 
+##        17        80        64        13         5         2         1         3 
+##      TLE3        WT 
+##         3       219 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: SC-alpha&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het  GATA6het 
+##         3        85        10       207        19        33        62        36 
+##       GSC     HHEXe   HHEXhet     HNF4A  HNF4Ahet      MNX1 NANOGehet   NEUROD1 
+##        30        11         1        45        27       282        38       148 
+##      NGN3    NKX2-2  ONECUT1e     OTUD5      PAX6      PBX1      PDX1   PROSER1 
+##         1       201        61        67        37        44       273        86 
+##     QSER1 QSER1TET1      RFX6    TADA2B      TET1  TET1/2/3      TLE3        WT 
+##        33        39         7       172        58        65       523      2018 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: SC-beta&quot;
+## 
+##       ARX      BCOR     FOXA1     FOXA2     GATA4  GATA4het     GATA6  GATA6het 
+##        75       142       417        13         1        18         2        58 
+##     GLIS3       GSC     HHEXe     HNF4A  HNF4Ahet     KDM2B      MNX1 NANOGehet 
+##         1        31         9        64        61         1         5        35 
+##   NEUROD1    NKX2-2  ONECUT1e     OTUD5      PAX6      PBX1      PDX1   PDX1het 
+##       460         9        93        97         2        24        22         1 
+##   PROSER1     QSER1 QSER1TET1      RFX6    TADA2B      TET1  TET1/2/3      TLE3 
+##        59        33         3         8         7        43        44       173 
+##        WT 
+##      3391 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: SC-delta&quot;
+## 
+##       ARX      BCOR     FOXA1     FOXA2  GATA4het  GATA6het     HHEXe  HNF4Ahet 
+##        22         5        45         2         1         2         2         2 
+##     KDM2B      MNX1 NANOGehet   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5 
+##         1       170         6        19         2        41         7         9 
+##      PAX6      PBX1      PDX1   PROSER1     QSER1 QSER1TET1      RFX6    TADA2B 
+##        21         3         9         5         1         9         2         2 
+##      TET1  TET1/2/3      TLE3        WT 
+##         5         3        34       319 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: SC-EC&quot;
+## 
+##       ARX      BCOR    BMPR1A     FOXA1     FOXA2     GATA4  GATA4het     GATA6 
+##        70        72         1       216         9         2         9         1 
+##  GATA6het     GLIS3       GSC     HHEXe     HNF4A  HNF4Ahet      MNX1 NANOGehet 
+##        51        13        24         9        26        26       238        36 
+##   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5      PAX6      PBX1      PDX1 
+##        50         1        18        43        79       438       148      1421 
+##   PDX1het   PROSER1     QSER1 QSER1TET1      RFX6    TADA2B      TET1  TET1/2/3 
+##         4       121        44        20        54        92        50         9 
+##      TLE3        WT 
+##       153      3545 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;
+## [1] &quot;current celltype: Stromal&quot;
+## 
+##       ARX      BCOR     FOXA1     FOXA2     GATA4  GATA4het     GATA6  GATA6het 
+##        61        13       141        62        20        45        19        21 
+##     GLIS3       GSC      HHEX     HHEXe   HHEXhet     HNF4A  HNF4Ahet      MNX1 
+##         2       120        13        25         2        26        12       235 
+## NANOGehet   NEUROD1      NGN3    NKX2-2  ONECUT1e     OTUD5      PAX6      PBX1 
+##         2        46        33        66        10        20        40        28 
+##      PDX1   PROSER1     QSER1 QSER1TET1      RFX6      TET1  TET1/2/3      TLE3 
+##         6         5        16        17        20        15         1        44 
+##        WT 
+##       146 
+## [1] &quot;working on: PAX6&quot;
+## [1] &quot;working on: OTUD5&quot;
+## [1] &quot;working on: ARX&quot;
+## [1] &quot;working on: ONECUT1e&quot;
+## [1] &quot;working on: HNF4Ahet&quot;
+## [1] &quot;working on: GATA4&quot;
+## [1] &quot;working on: NEUROD1&quot;
+## [1] &quot;working on: PDX1&quot;
+## [1] &quot;working on: GLIS3&quot;
+## [1] &quot;working on: HNF4A&quot;
+## [1] &quot;working on: QSER1TET1&quot;
+## [1] &quot;working on: PBX1&quot;
+## [1] &quot;working on: FOXA2&quot;
+## [1] &quot;working on: PDX1het&quot;
+## [1] &quot;working on: RFX6&quot;
+## [1] &quot;working on: KDM2B&quot;
+## [1] &quot;working on: BMPR1A&quot;
+## [1] &quot;working on: MNX1&quot;
+## [1] &quot;working on: HHEXe&quot;
+## [1] &quot;working on: TADA2B&quot;
+## [1] &quot;working on: FOXA1&quot;
+## [1] &quot;working on: HHEXhet&quot;
+## [1] &quot;working on: PROSER1&quot;
+## [1] &quot;working on: GSC&quot;
+## [1] &quot;working on: QSER1&quot;
+## [1] &quot;working on: GATA6het&quot;
+## [1] &quot;working on: GATA4het&quot;
+## [1] &quot;working on: NKX2-2&quot;
+## [1] &quot;working on: BCOR&quot;
+## [1] &quot;working on: TLE3&quot;
+## [1] &quot;working on: TET1/2/3&quot;
+## [1] &quot;working on: HHEX&quot;
+## [1] &quot;working on: NGN3&quot;
+## [1] &quot;working on: NANOGehet&quot;
+## [1] &quot;working on: TET1&quot;
+## [1] &quot;working on: GATA6&quot;</code></pre>
 <div id="session-information" class="section level1">
 <h1>Session information</h1>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##              used    (Mb) gc trigger    (Mb)   max used    (Mb)
-## Ncells    3712130   198.3    6981782   372.9    6981782   372.9
-## Vcells 1935593658 14767.5 6248713650 47674.0 5024733683 38335.7</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+## Ncells    5581411   298.1   10606925   566.5    7660149   409.1
+## Vcells 2443777979 18644.6 6248713083 47673.9 6248708429 47673.9</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
 <pre><code>## R version 4.4.0 (2024-04-24)
 ## Platform: x86_64-pc-linux-gnu
 ## Running under: Ubuntu 18.04.6 LTS
@@ -1716,19 +3302,20 @@ Analysis</h1>
 ##  [70] hms_1.1.3              data.table_1.15.4      car_3.1-2             
 ##  [73] utf8_1.2.4             spatstat.geom_3.2-9    RcppAnnoy_0.0.22      
 ##  [76] ggrepel_0.9.5          RANN_2.6.1             pillar_1.9.0          
-##  [79] spam_2.10-0            RcppHNSW_0.6.0         later_1.3.2           
-##  [82] splines_4.4.0          lattice_0.22-6         survival_3.6-4        
-##  [85] deldir_2.0-4           tidyselect_1.2.1       miniUI_0.1.1.1        
-##  [88] pbapply_1.7-2          knitr_1.46             scattermore_1.2       
-##  [91] xfun_0.44              matrixStats_1.3.0      stringi_1.8.4         
-##  [94] lazyeval_0.2.2         yaml_2.3.8             evaluate_0.23         
-##  [97] codetools_0.2-20       cli_3.6.2              uwot_0.2.2            
-## [100] xtable_1.8-4           reticulate_1.36.1      munsell_0.5.1         
-## [103] jquerylib_0.1.4        Rcpp_1.0.12            globals_0.16.3        
-## [106] spatstat.random_3.2-3  png_0.1-8              parallel_4.4.0        
-## [109] dotCall64_1.1-1        listenv_0.9.1          scales_1.3.0          
-## [112] ggridges_0.5.6         leiden_0.4.3.1         rlang_1.1.3           
-## [115] cowplot_1.1.3</code></pre>
+##  [79] limma_3.60.0           spam_2.10-0            RcppHNSW_0.6.0        
+##  [82] later_1.3.2            splines_4.4.0          lattice_0.22-6        
+##  [85] survival_3.6-4         deldir_2.0-4           tidyselect_1.2.1      
+##  [88] miniUI_0.1.1.1         pbapply_1.7-2          knitr_1.46            
+##  [91] scattermore_1.2        xfun_0.44              statmod_1.5.0         
+##  [94] matrixStats_1.3.0      stringi_1.8.4          lazyeval_0.2.2        
+##  [97] yaml_2.3.8             evaluate_0.23          codetools_0.2-20      
+## [100] cli_3.6.2              uwot_0.2.2             xtable_1.8-4          
+## [103] reticulate_1.36.1      munsell_0.5.1          jquerylib_0.1.4       
+## [106] Rcpp_1.0.12            globals_0.16.3         spatstat.random_3.2-3 
+## [109] png_0.1-8              parallel_4.4.0         presto_1.0.0          
+## [112] dotCall64_1.1-1        listenv_0.9.1          scales_1.3.0          
+## [115] ggridges_0.5.6         leiden_0.4.3.1         rlang_1.1.3           
+## [118] cowplot_1.1.3</code></pre>
 </div>
 
 

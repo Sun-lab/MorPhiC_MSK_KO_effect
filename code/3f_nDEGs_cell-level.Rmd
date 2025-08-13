@@ -46,7 +46,6 @@ celllevel_out_dir = file.path(out_dir,"cell-level")
 for( tp in c("D-1","D3","D7","D11","D18")){
   print(tp)
   res = read.csv(file.path(celllevel_out_dir,paste0("DE_cell-level_",tp,".csv")),row.names = 1)
-  res$gene = rownames(res)
   fig = res%>%
    dplyr::filter(p_val_adj<0.05)%>%
       group_by(celltype,genotype)%>%

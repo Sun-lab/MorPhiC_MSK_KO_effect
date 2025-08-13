@@ -59,10 +59,12 @@ integrated= subset(
 integrated$celltype = as.factor(integrated$celltype)
 summary(integrated$celltype)
 ```
+
+
 ```{r}
 for(tp in c("D-1","D3","D7","D11","D18")){
   if(!file.exists(file.path(celllevel_out_dir,paste0("DE_cell-level_",tp,".csv")))){
-      obj = integrated%>%subset(subset = time_point == tp)
+    obj = integrated%>%subset(subset = time_point == tp)
     ct2test = names(table(obj$celltype))[table(obj$celltype)>60]
     print(ct2test) 
     
@@ -75,9 +77,12 @@ for(tp in c("D-1","D3","D7","D11","D18")){
         print(paste0("working on: ", current_KO))
         n_KO = sum(obj_sub$genotype==current_KO)
         if(n_KO>=30){
-          df <- FindMarkers(obj_sub, ident.1 = current_KO, ident.2 = 'WT',group.by = 'genotype')
+          df <- FindMarkers(obj_sub, 
+                            ident.1 = current_KO, ident.2 = 'WT',group.by = 'genotype')
+          df$time_point = tp
           df$genotype = current_KO
           df$celltype = ct
+          df$gene = rownames(df)
           res_all = rbind(res_all, df)
         }
       }
