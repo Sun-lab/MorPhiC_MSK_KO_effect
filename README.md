@@ -48,9 +48,18 @@ HHEXe and ONECUT1e are expected to express lower level of HHEX and ONECUT1 trans
    Collect DE results from different cell types and save as text files.
 
 7. [**3d_nDEGs.Rmd**](code/3d_nDEGs.Rmd)  
-   Check the number of DE genes.
+   Check the number of DE genes using the pseudobulk approach.
+   
+8. [**3e_cell-level-DE.Rmd**](code/3e_cell-level-DE.Rmd)  
+   Run cell-level DE analysis for KO genotypes vs WT, conditioned on a given cell type.
 
-8. [**4_genotype-plots.Rmd**](code/4_genotype-plots.Rmd)  
+9. [**3f_nDEGs_cell-level.Rmd**](code/3f_nDEGs_cell-level.Rmd)  
+   Check the number of DE genes using the cell-level approach.
+
+10. [**3g_compare-DE.Rmd**](code/3g_compare-DE.Rmd)  
+  Compare the DE results using the pseudobulk and cell-level approaches in terms of their -log10(p-value).
+
+11. [**4_genotype-plots.Rmd**](code/4_genotype-plots.Rmd)  
    Time-point–specific visualizations of UMAP embeddings, cell type compositions, and number of DE genes for each genotype.
 
 
