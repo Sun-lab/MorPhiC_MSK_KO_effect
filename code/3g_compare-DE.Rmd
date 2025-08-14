@@ -62,15 +62,17 @@ for(tp in c("D-1","D3","D7","D11","D18")){
     )
   for(ct in unique(merged$celltype)){
     print(paste0("cell type: ", ct))
-    fig = merged%>%
-      filter(celltype==ct)%>%
-      ggplot( aes(x = nl10_pb, y = nl10_wc)) +
+    fig = merged %>%
+      filter(celltype == ct) %>%
+      ggplot(aes(x = nl10_pb, y = nl10_wc)) +
       geom_point(alpha = 0.6, size = 1) +
       geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+      stat_cor(method = "spearman", label.x = 1, label.y = 19, size = 3) + 
+      coord_cartesian(xlim = c(0, 20), ylim = c(0, 20)) +
       labs(
         x = "-log10(pseudobulk p-val)",
         y = "-log10(wilcoxon p-val)",
-        title = paste(tp,ct,sep = '_')
+        title = paste(tp, ct, sep = "_")
       ) +
       theme_classic() +
       facet_wrap(~genotype)
