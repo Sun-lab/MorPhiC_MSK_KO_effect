@@ -75,12 +75,6 @@ pseudo_obj_list = lapply(pseudo_obj_list,function(pseudo_obj){
 
 ```
 
-
-```{r}
-"NEUROD1"%in%rownames(GetAssayData(pseudo_obj_list[[1]]))
-```
-
-
 ```{r}
 obj = pseudo_obj_list[[5]]
 dat_mat = GetAssayData(obj)
