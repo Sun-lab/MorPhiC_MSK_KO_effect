@@ -126,15 +126,6 @@ obj_list = SplitObject(obj, split.by = "time_point")
 obj_list
 ```
 
-```{r}
-neurod1_expr = list()
-for(tp in c("D-1","D3","D7","D11","D18")){
-  dat = GetAssayData(obj_list[[tp]])
- neurod1_expr[[tp]] = dat["NEUROD1",]
-}
-lapply(neurod1_expr,hist)
-```
-
 # create pseudobulk samples
 
 
