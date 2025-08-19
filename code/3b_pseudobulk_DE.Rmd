@@ -62,15 +62,6 @@ pseudo_obj_list  = readRDS(f_pseudobulk_list)
 
 ```
 
-```{r}
-pseudo_neurod1_expr = list()
-for(tp in names(pseudo_obj_list)){
-  dat = GetAssayData(pseudo_obj_list[[tp]])
-  pseudo_neurod1_expr[[tp]] = dat["NEUROD1",]
-}
-lapply(pseudo_neurod1_expr,hist)
-```
-
 
 # remove pseudobulk samples with < 30 cells
 
