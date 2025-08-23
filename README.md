@@ -29,10 +29,10 @@ HHEXe and ONECUT1e are expected to express lower level of HHEX and ONECUT1 trans
 
 ## Analysis Workflow (inside `codes/`)
 
-1. [**0_process_metadata.Rmd**](code/0a_process_metadata.Rmd)  
+1. [**0a_process_metadata.Rmd**](code/0a_process_metadata.Rmd)  
    Process and clean cell metadata.
    
-2. [**0_process_metadata.Rmd**](code/0b_umap-embedding.Rmd)  
+2. [**0b_process_metadata.Rmd**](code/0b_umap-embedding.Rmd)  
 Process and clean cell metadata.
 
 3. [**1_cell_type_composition.Rmd**](code/1_cell_type_composition.Rmd)  
