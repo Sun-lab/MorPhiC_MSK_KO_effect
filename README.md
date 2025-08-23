@@ -68,20 +68,26 @@ Process and clean cell metadata.
 
 ## Output Files and Folders (inside `outs/`)
 
-- **metadata.csv/**
-   Contains cell-level metadata
+- **metadata.csv**
   
-- **genotype_plotsmetadata.csv/**
-   Contains metadata information for figures in **genotype_plots/**
+  Contains cell-level metadata
   
-- **anova/**  
+- **genotype_plotsmetadata.csv**
+  
+  Contains metadata information for figures in **genotype_plots/**
+  
+- **anova/**
+  
   Contains results from PCA and ANOVA analyses, including variance partitioning by technical and biological factors.
 
-- **cell_type_composition/**  
+- **cell_type_composition/**
+  
   Stores processed data and plots related to genotype-specific cell type compositions and statistical comparisons with WT.
 
-- **differential_expression/**  
+- **differential_expression/**
+  
   Holds pseudobulk-level differential expression results, including per–cell type DE gene tables and summary statistics.
 
-- **genotype_plots/**  
+- **genotype_plots/**
+  
   Contains time-point–specific visualizations for each genotype, including UMAP embeddings, and cell type proportion bar plots.
