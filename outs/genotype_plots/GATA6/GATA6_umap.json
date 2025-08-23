@@ -1009,16 +1009,16 @@
   },
   "source": "A",
   "attrs": {
-    "74e43f7a1e6": {
+    "74e56f0555a": {
       "x": {},
       "y": {},
       "colour": {},
       "type": "scatter"
     }
   },
-  "cur_data": "74e43f7a1e6",
+  "cur_data": "74e56f0555a",
   "visdat": {
-    "74e43f7a1e6": ["function (y) ", "x"]
+    "74e56f0555a": ["function (y) ", "x"]
   },
   "highlight": {
     "on": "plotly_click",

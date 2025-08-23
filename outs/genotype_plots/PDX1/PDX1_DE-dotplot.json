@@ -517,7 +517,7 @@
   },
   "source": "A",
   "attrs": {
-    "74e19fff9bf": {
+    "74e76a3ec": {
       "x": {},
       "y": {},
       "size": {},
@@ -525,9 +525,9 @@
       "type": "scatter"
     }
   },
-  "cur_data": "74e19fff9bf",
+  "cur_data": "74e76a3ec",
   "visdat": {
-    "74e19fff9bf": ["function (y) ", "x"]
+    "74e76a3ec": ["function (y) ", "x"]
   },
   "highlight": {
     "on": "plotly_click",

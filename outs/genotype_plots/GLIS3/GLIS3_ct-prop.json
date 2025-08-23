@@ -2123,16 +2123,16 @@
   },
   "source": "A",
   "attrs": {
-    "74edbc9986": {
+    "74e10f0c5c7": {
       "x": {},
       "y": {},
       "fill": {},
       "type": "bar"
     }
   },
-  "cur_data": "74edbc9986",
+  "cur_data": "74e10f0c5c7",
   "visdat": {
-    "74edbc9986": ["function (y) ", "x"]
+    "74e10f0c5c7": ["function (y) ", "x"]
   },
   "highlight": {
     "on": "plotly_click",
