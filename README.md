@@ -66,8 +66,14 @@ Process and clean cell metadata.
    Time-point–specific visualizations of UMAP embeddings, cell type compositions, and number of DE genes for each genotype.
 
 
-## Output Folders (inside `outs/`)
+## Output Files and Folders (inside `outs/`)
 
+- **metadata.csv/**
+   Contains cell-level metadata
+  
+- **genotype_plotsmetadata.csv/**
+   Contains metadata information for figures in **genotype_plots/**
+  
 - **anova/**  
   Contains results from PCA and ANOVA analyses, including variance partitioning by technical and biological factors.
 
