@@ -353,14 +353,19 @@ obj_list
 
 
 ```{r, warning = FALSE, message=FALSE}
-prop_lst = lapply(c("D3","D7","D11","D18"),function(tp){
+prop_lst = lapply(c("D-1","D3","D7","D11","D18"),function(tp){
   df = obj_list[[tp]][[]]
-  df %>% group_by(genotype, celltype) %>%
+  df = df %>% group_by(genotype, celltype) %>%
   summarise(count = n()) %>%
   mutate(proportion = count / sum(count)) %>%
   arrange(genotype, desc(proportion))
+  df$time_point = tp
+  return(df)
 })
-names(prop_lst) = c("D3","D7","D11","D18")
+names(prop_lst) = c("D-1","D3","D7","D11","D18")
+
+prop_lst_all = Reduce(rbind,prop_lst)
+write.csv(prop_lst_all,file.path(out_dir,"ct_prop_all.csv"))
 ```
 
 
