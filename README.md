@@ -72,10 +72,6 @@ Process and clean cell metadata.
   
   Contains cell-level metadata
   
-- **genotype_plotsmetadata.csv**
-  
-  Contains metadata information for figures in **genotype_plots/**
-  
 - **anova/**
   
   Contains results from PCA and ANOVA analyses, including variance partitioning by technical and biological factors.
