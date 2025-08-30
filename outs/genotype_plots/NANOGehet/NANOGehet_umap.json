@@ -1035,16 +1035,16 @@
   },
   "source": "A",
   "attrs": {
-    "74e6de193bb": {
+    "2a933dfa5ffa": {
       "x": {},
       "y": {},
       "colour": {},
       "type": "scatter"
     }
   },
-  "cur_data": "74e6de193bb",
+  "cur_data": "2a933dfa5ffa",
   "visdat": {
-    "74e6de193bb": ["function (y) ", "x"]
+    "2a933dfa5ffa": ["function (y) ", "x"]
   },
   "highlight": {
     "on": "plotly_click",

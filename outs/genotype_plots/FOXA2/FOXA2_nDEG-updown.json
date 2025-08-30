@@ -203,16 +203,16 @@
   },
   "source": "A",
   "attrs": {
-    "74e5376cdd0": {
+    "2a933c458d31": {
       "x": {},
       "y": {},
       "fill": {},
       "type": "bar"
     }
   },
-  "cur_data": "74e5376cdd0",
+  "cur_data": "2a933c458d31",
   "visdat": {
-    "74e5376cdd0": ["function (y) ", "x"]
+    "2a933c458d31": ["function (y) ", "x"]
   },
   "highlight": {
     "on": "plotly_click",

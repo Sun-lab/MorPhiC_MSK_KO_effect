@@ -1061,16 +1061,16 @@
   },
   "source": "A",
   "attrs": {
-    "74e60a32188": {
+    "2a9335d9e1fd": {
       "x": {},
       "y": {},
       "colour": {},
       "type": "scatter"
     }
   },
-  "cur_data": "74e60a32188",
+  "cur_data": "2a9335d9e1fd",
   "visdat": {
-    "74e60a32188": ["function (y) ", "x"]
+    "2a9335d9e1fd": ["function (y) ", "x"]
   },
   "highlight": {
     "on": "plotly_click",
